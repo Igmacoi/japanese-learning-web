@@ -13,6 +13,9 @@ function Home() {
         <Link to="/Vocabulario" className="text-white mt-4 underline">
           Go to Vocabulario Page
         </Link>
+        <Link to="/Pruebas" className="text-white mt-4 underline">
+          Pruebas
+        </Link>
 
       </div>
   );
