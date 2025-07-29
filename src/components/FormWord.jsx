@@ -76,7 +76,7 @@ const FormularioPalabra = () => {
                 value={kanji}
                 onChange={(e) => setKanji(e.target.value)}
                 placeholder="例: 水"
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+                className="w-full px-4 py-2 border border-gray-300 rounded-md text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
                 required
               />
             </div>
@@ -91,7 +91,7 @@ const FormularioPalabra = () => {
                 value={lectura}
                 onChange={(e) => setLectura(e.target.value)}
                 placeholder="例: みず、スイ"
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+                className="w-full px-4 py-2 border border-gray-300 rounded-md text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
                 required
               />
             </div>
@@ -107,7 +107,7 @@ const FormularioPalabra = () => {
               value={significado}
               onChange={(e) => setSignificado(e.target.value)}
               placeholder="例: agua"
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
               required
             />
           </div>
@@ -121,7 +121,7 @@ const FormularioPalabra = () => {
                 id="nivel"
                 value={nivel}
                 onChange={(e) => setNivel(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+                className="w-full px-4 py-2 border border-gray-300 rounded-md text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
                 required
               >
                 <option value="">Selecciona un nivel</option>

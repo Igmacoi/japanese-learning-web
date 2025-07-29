@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
 import { auth } from "../utils/firebase";
+import FormularioPalabra from "../components/FormWord";
+import { Link } from "react-router-dom";
 
 function Home() {
   const [usuarioLogeado, setUsuarioLogeado] = useState(null);
@@ -26,6 +28,15 @@ function Home() {
       ) : (
         <p className="text-lg font-medium">🔒 No estás logeado. Inicia sesión para continuar.</p>
       )}
+      <div>
+        <FormularioPalabra />
+      </div>
+       <Link to="/Vocabulario" className="hover:underline text-sm text-black">
+        📝 Vocabulario
+      </Link>
+      <Link to="/Pruebas" className="hover:underline text-sm text-black">
+        📝 Crud
+      </Link>
     </div>
   );
 }

@@ -31,9 +31,9 @@ export default function VocabularioCard() {
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       {palabras.map(palabra => (
         <div key={palabra.id} className="bg-white shadow-md rounded p-4 flex items-center gap-4">
-          {palabra.imagen && (
+          {palabra.imagenURL && (
             <img
-              src={palabra.imagen}
+              src={palabra.imagenURL}
               alt={palabra.japones}
               className="w-16 h-16 object-cover rounded"
             />

@@ -47,8 +47,14 @@ const CrudVocabulario = () => {
 
   const guardarEdicion = async (e) => {
     e.preventDefault();
-    if (sinImagen) form.imagen = null;
-    await editarPalabraConImagen(editandoId, form, sinImagen ? null : imagenRecortada);
+
+    const datosActualizados = { ...form };
+
+    if (sinImagen) {
+      datosActualizados.imagenURL = null;
+    }
+
+    await editarPalabraConImagen(editandoId, datosActualizados, sinImagen ? null : imagenRecortada);
     cancelarEdicion();
     cargarPalabras();
   };
@@ -68,8 +74,8 @@ const CrudVocabulario = () => {
             <div>
               <h3 className="text-lg font-semibold">{p.kanji}</h3>
               <p className="text-sm text-gray-600">{p.lectura} • {p.significado} • JLPT {p.nivel}</p>
-              {p.imagen ? (
-                <img src={p.imagen} alt="Imagen" className="mt-2 h-20 rounded" loading="lazy" />
+              {p.imagenURL ? (
+                <img src={p.imagenURL} alt="Imagen" className="mt-2 h-20 rounded" loading="lazy" />
               ) : (
                 <p className="text-sm text-gray-400 mt-2 italic">Sin imagen</p>
               )}
@@ -87,7 +93,7 @@ const CrudVocabulario = () => {
               >
                 🗑️ Eliminar
               </button>
-              {!p.imagen && (
+              {!p.imagenURL && (
                 <button
                   onClick={() => iniciarEdicion(p.id)}
                   className="text-green-600 hover:underline"

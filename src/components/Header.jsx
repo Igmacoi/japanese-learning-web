@@ -26,6 +26,9 @@ export default function Header() {
             <Link to="/paginaUserLog" className="hover:underline text-sm">
               📝 Mis palabras
             </Link>
+            <Link to="/ProfileUser" className="text-sm hover:underline">
+              👤 Mi perfil
+            </Link>
 
             {/* Link para admin y creador */}
             {(rol === "admin" || rol === "creador") && (

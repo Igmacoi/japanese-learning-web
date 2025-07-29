@@ -1,45 +1,48 @@
 // src/services/firestore.js
 import { collection, addDoc, updateDoc, getDoc, getDocs ,doc ,deleteDoc } from 'firebase/firestore';
 import { db } from '../utils/firebase';
-import { subirImagenAImgBB } from './imgbb';
+import { uploadToCloudinary } from "../utils/uploadToCloudinary";
 
-export const guardarPalabraConImagen = async (palabra, imagenFile = null) => {
-  try {
-    let imagen = null;
+export async function guardarPalabraConImagen(palabra, imagenRecortada) {
+  let imagenURL = null;
 
-    if (imagenFile) {
-      imagen = await subirImagenAImgBB(imagenFile);
-    }
-
-    await addDoc(collection(db, 'vocabulario'), {
-      ...palabra,
-      imagen,
+  if (imagenRecortada) {
+    imagenURL = await uploadToCloudinary({
+      archivo: imagenRecortada,
+      folder: "palabras"
     });
-
-    console.log('Palabra guardada con éxito:', palabra);
-  } catch (error) {
-    console.error('Error al guardar la palabra', error);
   }
-};
+
+  const nuevaPalabra = {
+    ...palabra,
+    imagenURL: imagenURL || null
+  };
+
+  await addDoc(collection(db, "palabras"), nuevaPalabra);
+}
 
 export const editarPalabraConImagen = async (id, nuevosDatos = {}, nuevaImagenFile = null) => {
   try {
     const nuevosCampos = { ...nuevosDatos };
 
     if (nuevaImagenFile) {
-      const nuevaUrl = await subirImagenAImgBB(nuevaImagenFile);
-      nuevosCampos.imagen = nuevaUrl;
+      const nuevaUrl = await uploadToCloudinary({
+        archivo: nuevaImagenFile,
+        folder: "palabras",
+        preset: "img_significado"
+      });
+      nuevosCampos.imagenURL = nuevaUrl;
     }
 
-    // Si explícitamente se pide eliminar la imagen (sinImagen=true en frontend)
-    if (!nuevaImagenFile && nuevosDatos.imagen === null) {
-      nuevosCampos.imagen = null;
+    // Si se especifica que se quiere eliminar la imagenURL
+    if (!nuevaImagenFile && nuevosDatos.imagenURL === null) {
+      nuevosCampos.imagenURL = null;
     }
 
-    await updateDoc(doc(db, 'vocabulario', id), nuevosCampos);
-    console.log('Palabra actualizada con éxito:', id);
+    await updateDoc(doc(db, "vocabulario", id), nuevosCampos);
+    console.log("Palabra actualizada con éxito:", id);
   } catch (error) {
-    console.error('Error al actualizar palabra:', error);
+    console.error("Error al actualizar palabra:", error);
     throw error;
   }
 };

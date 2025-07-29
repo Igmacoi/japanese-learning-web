@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import RutaProtegida from './RutaProtegida';
 {/* Usuarios */}
 import PaginaUserLog from '../pages/paginaUserLog';
+import ProfileUser from '../pages/ProfileUser';
 {/* admin */}
 import PaginaAdmin from '../pages/PaginaAdmin';
 {/* creador */}
@@ -28,6 +29,16 @@ export default function AppRoutes() {
             <PaginaUserLog />
           </RutaProtegida>
         } />
+
+        <Route path="/ProfileUser" element={
+            <RutaProtegida rolesPermitidos={["usuario", "admin", "creador"]}>
+              <ProfileUser />
+            </RutaProtegida>
+          } />
+
+
+
+
 
         <Route path="admin" element={
           <RutaProtegida rolesPermitidos={['admin', 'creador']}>
