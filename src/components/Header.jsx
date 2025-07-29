@@ -4,9 +4,8 @@ import { signOut } from "firebase/auth";
 import { auth } from "../utils/firebase";
 import { useAuth } from "../context/AuthContext";
 
-
 export default function Header() {
-  const { usuario, rol } = useAuth(); // 👈 usuario viene de context
+  const { usuario, rol } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -23,10 +22,30 @@ export default function Header() {
           <Link to="/login" className="hover:underline">Iniciar sesión</Link>
         ) : (
           <>
+            {/* Link para todos los roles logeados */}
+            <Link to="/paginaUserLog" className="hover:underline text-sm">
+              📝 Mis palabras
+            </Link>
+
+            {/* Link para admin y creador */}
+            {(rol === "admin" || rol === "creador") && (
+              <Link to="/admin" className="hover:underline text-sm">
+                🛠 Panel admin
+              </Link>
+            )}
+
+            {/* Link exclusivo para creador */}
+            {rol === "creador" && (
+              <Link to="/creador" className="hover:underline text-sm">
+                🎨 Panel creador
+              </Link>
+            )}
+
             <div className="text-sm text-right">
               👤 {usuario.email || usuario.displayName}<br />
               🛡️ Rol: <span className="font-bold capitalize">{rol}</span>
             </div>
+
             <button
               onClick={handleLogout}
               className="bg-red-500 px-3 py-1 rounded hover:bg-red-600"
