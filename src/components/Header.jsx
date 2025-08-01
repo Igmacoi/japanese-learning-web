@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { signOut } from "firebase/auth";
 import { auth } from "../utils/firebase";
 import { useAuth } from "../context/AuthContext";
+import UserDropdown from "./UserDropdown";
+import LogoPag from "../assets/LogoPag.webp";
 
 export default function Header() {
   const { usuario, rol } = useAuth();
@@ -14,48 +16,25 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-blue-600 text-white px-4 py-2 flex justify-between items-center shadow">
-      <Link to="/" className="text-lg font-semibold">📚 Vocabulario JPN</Link>
+    <header className="flex items-center justify-between pl-6 pr-6 pt-1 pb-1 shadow-lg">
+      <Link to="/" className="text-lg font-semibold">
+        <img
+          src={LogoPag}
+          alt="Logo de la app"
+          className="h-20 w-auto object-contain"
+        />
+      </Link>
+
+      <div className="flex gap-4 items-center">
+        <Link to="/" className="text-lg font-semibold text-white">OTRO</Link>
+        <Link to="/" className="text-lg font-semibold text-white">Agregar</Link>
+      </div>
 
       <nav className="flex gap-4 items-center">
         {!usuario ? (
-          <Link to="/login" className="hover:underline">Iniciar sesión</Link>
+          <Link to="/login" className="text-white font-semibold hover:underline">Iniciar sesión</Link>
         ) : (
-          <>
-            {/* Link para todos los roles logeados */}
-            <Link to="/paginaUserLog" className="hover:underline text-sm">
-              📝 Mis palabras
-            </Link>
-            <Link to="/ProfileUser" className="text-sm hover:underline">
-              👤 Mi perfil
-            </Link>
-
-            {/* Link para admin y creador */}
-            {(rol === "admin" || rol === "creador") && (
-              <Link to="/admin" className="hover:underline text-sm">
-                🛠 Panel admin
-              </Link>
-            )}
-
-            {/* Link exclusivo para creador */}
-            {rol === "creador" && (
-              <Link to="/creador" className="hover:underline text-sm">
-                🎨 Panel creador
-              </Link>
-            )}
-
-            <div className="text-sm text-right">
-              👤 {usuario.email || usuario.displayName}<br />
-              🛡️ Rol: <span className="font-bold capitalize">{rol}</span>
-            </div>
-
-            <button
-              onClick={handleLogout}
-              className="bg-red-500 px-3 py-1 rounded hover:bg-red-600"
-            >
-              Cerrar sesión
-            </button>
-          </>
+          <UserDropdown />
         )}
       </nav>
     </header>

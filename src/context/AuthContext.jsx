@@ -1,7 +1,7 @@
-// src/context/AuthContext.jsx
 import { createContext, useContext, useState, useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "../utils/firebase";
+import { auth, db } from "../utils/firebase";
+import { doc, getDoc, onSnapshot } from "firebase/firestore";
 import { obtenerRolUsuario } from "../services/authService";
 
 const AuthContext = createContext();
@@ -11,23 +11,42 @@ export function AuthProvider({ children }) {
   const [rol, setRol] = useState(null);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      setUsuario(user);
+    let unsubscribeFirestore = null;
+
+    const unsubscribeAuth = onAuthStateChanged(auth, async (user) => {
       if (user) {
         const rolActual = await obtenerRolUsuario(user.uid);
         setRol(rolActual);
+
+        const ref = doc(db, "usuarios", user.uid);
+
+        unsubscribeFirestore = onSnapshot(ref, (snap) => {
+          const datos = snap.exists() ? snap.data() : {};
+          setUsuario({
+            uid: user.uid,
+            email: user.email,
+            displayName: datos.displayName || user.displayName || "",
+            avatarURL: datos.avatarURL || user.photoURL || "",
+          });
+        });
       } else {
+        setUsuario(null);
         setRol(null);
+        if (unsubscribeFirestore) unsubscribeFirestore();
       }
     });
-    return () => unsubscribe();
+
+    return () => {
+      unsubscribeAuth();
+      if (unsubscribeFirestore) unsubscribeFirestore();
+    };
   }, []);
 
   const esAdmin = () => rol === "admin";
   const esJefaso = () => rol === "jefaso";
 
   return (
-    <AuthContext.Provider value={{ usuario, rol, esAdmin, esJefaso }}>
+    <AuthContext.Provider value={{ usuario, setUsuario, rol, esAdmin, esJefaso }}>
       {children}
     </AuthContext.Provider>
   );

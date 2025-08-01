@@ -6,7 +6,6 @@ function Pruebas() {
   return (
     <div >
       
-      <CrudVocabulario />
     </div>
   );
 }

@@ -1,42 +1,37 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Header from "../components/Header";
-import { auth } from "../utils/firebase";
-import FormularioPalabra from "../components/FormWord";
-import { Link } from "react-router-dom";
+import VideoInicio from "../assets/VideoInicio.mp4";
 
 function Home() {
-  const [usuarioLogeado, setUsuarioLogeado] = useState(null);
-  const [verificando, setVerificando] = useState(true);
-
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      setUsuarioLogeado(user);
-      setVerificando(false);
-    });
-    return () => unsubscribe(); // limpia el listener
-  }, []);
-
-  if (verificando) {
-    return <div className="text-center text-white p-8">Cargando sesión...</div>;
-  }
-
   return (
-    <div className="h-screen w-full bg-gradient-to-b from-[#DED1C6] via-[#A77693] via-[#174871] to-[#0F2D4D] flex flex-col items-center justify-center text-white text-center">
-      <Header />
-      {usuarioLogeado ? (
-        <p className="text-lg font-medium">🎉 ¡Bienvenido, {usuarioLogeado.displayName || "usuario"}!</p>
-      ) : (
-        <p className="text-lg font-medium">🔒 No estás logeado. Inicia sesión para continuar.</p>
-      )}
-      <div>
-        <FormularioPalabra />
-      </div>
-       <Link to="/Vocabulario" className="hover:underline text-sm text-black">
-        📝 Vocabulario
-      </Link>
-      <Link to="/Pruebas" className="hover:underline text-sm text-black">
-        📝 Crud
-      </Link>
+    <div className="relative">
+      {/* Sección de video + contenido */}
+      <section className="relative h-screen w-full overflow-hidden">
+        {/* Video de fondo */}
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute top-0 left-0 w-full h-full object-cover z-[-2]"
+        >
+          <source src={VideoInicio} type="video/mp4" />
+        </video>
+
+        <div className="absolute top-0 left-0 w-full h-full bg-black/20 z-[-1]" />
+
+        <div className="absolute top-0 left-0 w-full z-20">
+          <Header />
+        </div>
+      </section>
+
+      {/* Sección de contenido siguiente */}
+      <section className="flex flex-col items-center justify-center min-h-screen bg-black text-white">
+        <p className="text-xl">Otro contenido</p>
+      </section>
+      <section className="flex flex-col items-center justify-center min-h-screen bg-amber-400 text-white">
+        <p className="text-xl">Este seria otro contenido</p>
+      </section>
     </div>
   );
 }
